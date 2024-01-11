@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 """ Starts a Flash Web Application HBNB"""
 from flask import Flask
 app = Flask(__name__)
