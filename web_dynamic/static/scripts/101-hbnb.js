@@ -28,6 +28,37 @@ $(document).ready(function() {
         let statesCities = Object.values(checkedStates).concat(Object.values(checkedCities));
         $('div.locations h4').html(statesCities.join(', ') || '&nbsp;');
     }
+  $('#toggle-reviews').click(function() {
+        const status = $(this).data('status');
+        if (status === 'show') {
+            fetchReviews();
+            $(this).data('status', 'hide').text('hide');
+        } else {
+            $('.Review').remove();
+            $(this).data('status', 'show').text('show');
+        }
+    });
+
+  function fetchReviews(placeId) {
+    $.ajax({
+        url: 'http://0.0.0.0:5001/api/v1/places/' + placeId + '/reviews',
+        type: 'GET',
+        dataType: 'json',
+        success: function(reviews) {
+            displayReviews(reviews);
+        },
+        error: function(error) {
+            console.error('Error fetching reviews:', error);
+        }
+    });
+}
+
+     function displayReviews(reviews) {
+
+          for (let i = 0; i < reviews.length; i++) {
+              $('.places').append('<div class="Review">' + reviews[i].content + '</div>');
+         }
+        }
 
   $.get('http://0.0.0.0:5001/api/v1/status/', function(data, textStatus) {
     if (textStatus === 'success') {
